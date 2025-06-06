@@ -4,7 +4,7 @@ $newslimit = (int)Flux::config('CMSNewsLimit');
 $newstype = (int)Flux::config('CMSNewsType');
 if($newstype == '1'){
 	$news = Flux::config('FluxTables.CMSNewsTable'); 
-	$sql = "SELECT title, body, link, author, created, modified FROM {$server->loginDatabase}.$news ORDER BY id DESC LIMIT $newslimit";
+	$sql = "SELECT title, body, img, link, author, created, modified FROM {$server->loginDatabase}.$news ORDER BY id DESC LIMIT $newslimit";
 	$sth = $server->connection->getStatement($sql);
 	$sth->execute();
 	$news = $sth->fetchAll();

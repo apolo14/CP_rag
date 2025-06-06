@@ -6,6 +6,7 @@ $title = Flux::message('NewsAddTitle');
 $news	= Flux::config('FluxTables.CMSNewsTable');
 $title	= trim($params->get('news_title'));
 $body	= trim($params->get('news_body'));
+$img    = trim($params->get('news_img'));
 $link	= trim($params->get('news_link'));
 $author	= trim($params->get('news_author'));
 
@@ -28,10 +29,10 @@ if(count($_POST)){
 			}
 		}
 		
-        $sql = "INSERT INTO {$server->loginDatabase}.$news (title, body, link, author, created, modified)";
-        $sql .= "VALUES (?, ?, ?, ?, NOW(), NOW())"; 
+        $sql = "INSERT INTO {$server->loginDatabase}.$news (title, body, img, link, author, created, modified)";
+        $sql .= "VALUES (?, ?, ?, ?, ?, NOW(), NOW())"; 
         $sth = $server->connection->getStatement($sql);
-        $sth->execute(array($title, $body, $link, $author));
+        $sth->execute(array($title, $body, $img, $link, $author));
         
         $session->setMessageData(Flux::message('CMSNewsAdded'));
         if ($auth->actionAllowed('news', 'index')) {

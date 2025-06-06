@@ -1,29 +1,18 @@
 <?php
-if (version_compare(PHP_VERSION, '5.2.1', '<')) {
-	echo '<h2>Error</h2>';
-	echo '<p>PHP 5.2.1 or higher is required to use Flux Control Panel.</p>';
-	echo '<p>You are running '.PHP_VERSION.'</p>';
-	exit;
-}
-
-// Disable Zend Engine 1 compatibility mode.
-// See: http://www.php.net/manual/en/ini.core.php#ini.zend.ze1-compatibility-mode
-ini_set('zend.ze1_compatibility_mode', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Time started.
 define('__START__', microtime(true));
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
-define('FLUX_ROOT',       str_replace('\\', '/', dirname(__FILE__)));
-define('FLUX_DATA_DIR',   'data');
-define('FLUX_CONFIG_DIR', 'config');
-define('FLUX_LIB_DIR',    'lib');
-define('FLUX_MODULE_DIR', 'modules');
-define('FLUX_THEME_DIR',  'themes');
-define('FLUX_ADDON_DIR',  'addons');
-define('FLUX_LANG_DIR',   'lang');
+define('FLUX_ROOT',			str_replace('\\', '/', dirname(__FILE__)));
+define('FLUX_DATA_DIR',		'data');
+define('FLUX_CONFIG_DIR',	'config');
+define('FLUX_LIB_DIR',		'lib');
+define('FLUX_MODULE_DIR',	'modules');
+define('FLUX_THEME_DIR',	'themes');
+define('FLUX_ADDON_DIR',	'addons');
+define('FLUX_LANG_DIR',		'lang');
 
 // Clean GPC arrays in the event magic_quotes_gpc is enabled.
 if (ini_get('magic_quotes_gpc')) {
@@ -44,7 +33,6 @@ require_once FLUX_CONFIG_DIR.'/groups.php';
 
 // Some necessary Flux core libraries.
 require_once 'Flux.php';
-require_once 'Flux/Security.php';
 require_once 'Flux/Dispatcher.php';
 require_once 'Flux/SessionData.php';
 require_once 'Flux/DataObject.php';
@@ -53,22 +41,28 @@ require_once 'Flux/Installer.php';
 require_once 'Flux/PermissionError.php';
 
 // Vendor libraries.
-require_once 'markdown/markdown.php';
 
 try {
-	if (!extension_loaded('pdo')) {
-		throw new Flux_Error('The PDO extension is required to use Flux, please make sure it is installed along with the PDO_MYSQL driver.');
-	}
-	elseif (!extension_loaded('pdo_mysql')) {
-		throw new Flux_Error('The PDO_MYSQL driver for the PDO extension must be installed to use Flux.  Please consult the PHP manual for installation instructions.');
-	}
-
 	// Initialize Flux.
 	Flux::initialize(array(
-		'appConfigFile'      => FLUX_CONFIG_DIR.'/application.php',
-		'serversConfigFile'  => FLUX_CONFIG_DIR.'/servers.php',
-		//'messagesConfigFile' => FLUX_CONFIG_DIR.'/messages.php' // No longer needed (Deprecated)
+		'appConfigFile'           => FLUX_CONFIG_DIR.'/application.php',
+		'serversConfigFile'       => FLUX_CONFIG_DIR.'/servers.php',
+		'appConfigFileImport'     => FLUX_CONFIG_DIR.'/import/application.php',
+		'serversConfigFileImport' => FLUX_CONFIG_DIR.'/import/servers.php',
 	));
+
+//codigo do deepseek
+	try {
+		$serverStatus = Flux::getServerStatus();
+        Flux::register('serverStatus', $serverStatus);
+		$serverStatus = Flux::get('serverStatus');
+	} catch (Exception $e) {
+		        error_log("Erro ao obter status do servidor: ".$e->getMessage());
+        Flux::register('serverStatus', array());
+	}
+
+
+
 
 	// Set time limit.
 	set_time_limit((int)Flux::config('ScriptTimeLimit'));
@@ -110,31 +104,33 @@ try {
 				mkdir($directory, 0777);
 		}
 	}
-	
+
 	if (Flux::config('RequireOwnership') && function_exists('posix_getuid'))
 		$uid = posix_getuid();
-	
+
 	$directories = array(
-		FLUX_DATA_DIR.'/logs'     => 'log storage',
-		FLUX_DATA_DIR.'/itemshop' => 'item shop image',
-		FLUX_DATA_DIR.'/tmp'      => 'temporary'
+		FLUX_DATA_DIR.'/logs'		=> 'log storage',
+		FLUX_DATA_DIR.'/itemshop'	=> 'item shop image',
+		FLUX_DATA_DIR.'/tmp'		=> 'temporary'
 	);
-	
+
 	foreach ($directories as $directory => $directoryFunction) {
 		$directory = realpath($directory);
-		if (!is_writable($directory))
+		if (!is_dir($directory))
+			mkdir($directory, 0600);
+		if (!is_writable($directory) && is_dir($directory))
 			throw new Flux_PermissionError("The $directoryFunction directory '$directory' is not writable.  Remedy with `chmod 0600 $directory`");
 		if (Flux::config('RequireOwnership') && function_exists('posix_getuid') && fileowner($directory) != $uid)
 			throw new Flux_PermissionError("The $directoryFunction directory '$directory' is not owned by the executing user.  Remedy with `chown -R ".posix_geteuid().":".posix_geteuid()." $directory`");
 	}
-	
+
 	if (ini_get('session.use_trans_sid'))
 		throw new Flux_Error("The 'session.use_trans_sid' php.ini configuration must be turned off for Flux to work.");
 
 	// Installer library.
 	$installer = Flux_Installer::getInstance();
 	if ($hasUpdates=$installer->updateNeeded())
-		Flux::config('ThemeName', 'installer');
+		Flux::config('ThemeName', array('installer'));
 
 	$sessionKey = Flux::config('SessionKey');
 	$sessionExpireDuration = Flux::config('SessionCookieExpire') * 60 * 60;
@@ -149,7 +145,6 @@ try {
 
 	// Initialize session data.
 	Flux::$sessionData = new Flux_SessionData($_SESSION[$sessionKey], $hasUpdates);
-	Flux_Security::setSession($_SESSION[$sessionKey]);
 
 	// Initialize authorization component.
 	$accessConfig = Flux::parseConfigFile(FLUX_CONFIG_DIR.'/access.php');
@@ -162,20 +157,22 @@ try {
 	$accessConfig->set('unauthorized.index', AccountLevel::ANYONE);
 	$authComponent = Flux_Authorization::getInstance($accessConfig, Flux::$sessionData);
 
-	if (!Flux::config('DebugMode')) {
-		ini_set('display_errors', 0);
+	if (Flux::config('DebugMode')) {
+		error_reporting(E_ALL);
+		ini_set('display_errors', 1);
 	}
 
 	// Dispatch requests->modules->actions->views.
 	$dispatcher = Flux_Dispatcher::getInstance();
 	$dispatcher->setDefaultModule(Flux::config('DefaultModule'));
 	$dispatcher->dispatch(array(
-		'basePath'                  => Flux::config('BaseURI'),
-		'useCleanUrls'              => Flux::config('UseCleanUrls'),
-		'modulePath'                => FLUX_MODULE_DIR,
-		'themePath'                 => FLUX_THEME_DIR.'/'.Flux::config('ThemeName'),
-		'missingActionModuleAction' => Flux::config('DebugMode') ? array('errors', 'missing_action') : array('main', 'page_not_found'),
-		'missingViewModuleAction'   => Flux::config('DebugMode') ? array('errors', 'missing_view')   : array('main', 'page_not_found')
+		'basePath'					=> Flux::config('BaseURI'),
+		'useCleanUrls'				=> Flux::config('UseCleanUrls'),
+		'modulePath'				=> FLUX_MODULE_DIR,
+		'themePath'					=> FLUX_THEME_DIR,
+		'themeName'                 => Flux::$sessionData->theme,
+		'missingActionModuleAction'	=> Flux::config('DebugMode') ? array('errors', 'missing_action') : array('main', 'page_not_found'),
+		'missingViewModuleAction'	=> Flux::config('DebugMode') ? array('errors', 'missing_view')   : array('main', 'page_not_found')
 	));
 }
 catch (Exception $e) {
@@ -189,6 +186,16 @@ catch (Exception $e) {
 		$eLog->puts('(%s) Exception %s: %s', get_class($e), get_class($e), $e->getMessage());
 		foreach (explode("\n", $e->getTraceAsString()) as $traceLine) {
 			$eLog->puts('(%s) **TRACE** %s', get_class($e), $traceLine);
+		}
+	}
+
+	if(Flux::config('DiscordUseWebhook')) {
+		if(Flux::config('DiscordSendOnErrorException')) {
+			sendtodiscord(Flux::config('DiscordWebhookURL'), '```ansi
+[2;31mERROR[0m
+Error: '. get_class($e) .'
+Exception: '. $e->getMessage() .'
+File: '. $e->getFile() .':'. $e->getLine() .'```');
 		}
 	}
 

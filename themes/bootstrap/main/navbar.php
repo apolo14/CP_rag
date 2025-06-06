@@ -12,6 +12,7 @@
 			<a class="navbar-brand" href="./"><?php echo Flux::config('SiteTitle'); ?></a>
 		</div>
 		<div class="collapse navbar-collapse">
+			
 			<ul class="nav navbar-nav">
 				<?php $menuItems = $this->getMenuItems(); ?>
 				<?php if (!empty($menuItems)): ?>

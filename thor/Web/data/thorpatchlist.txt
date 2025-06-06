@@ -1,0 +1,4 @@
+// 1 my_patch.thor
+// 2 my_second_patch.thor
+
+1 update_msgstringtable.thor
