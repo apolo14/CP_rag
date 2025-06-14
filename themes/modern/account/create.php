@@ -124,7 +124,6 @@
                             <label>
                                 <input type="radio" name="gender" id="register_gender_f" value="F"<?php if ($params->get('gender') === 'F') echo ' checked="checked"' ?> /> <?php echo $this->genderText('F') ?>
                             </label>
-                            <strong title="<?php echo htmlspecialchars(Flux::message('AccountCreateGenderInfo')) ?>">?</strong>
                         </div>
                     </div>
                     <div class="form-group">

@@ -68,7 +68,7 @@ if (!defined('FLUX_ROOT')) exit;
     ================================================== -->
     <section id="about">
 
-        <div class="row about-intro">
+        <div class="row about-intro" id="about-features">
 
             <div class="col-four">
                 <h1 class="intro-header" data-aos="fade-up"><img src="images/girl-bg.png" /></h1>
@@ -76,7 +76,7 @@ if (!defined('FLUX_ROOT')) exit;
             <div class="col-eight">
 				<h1>UM POUCO SOBRE O MIDGARD:</h1>
                 <p class="lead" data-aos="fade-up">
-                    Prepare-se para desfrutar de muitas emoções em nosso servidor! Levamos as Guerras do Emperium e combates em geral muito a sério, nossos jogadores desfrutarão da melhor experiencia possivél dentro do universo de Rune Midgard!
+                    Prepare-se para desfrutar de muitas emoções em nosso servidor! Levamos as Guerras do Emperium e combates em geral muito a sério, nossos jogadores desfrutarão da melhor experiencia possível dentro do universo de Rune Midgard!
 					</p>
 				<p class="lead" data-aos="fade-up">	
 					Atendemos todos os tipos de jogadores, desde os dedicados, que permanecem online durante muitas horas, até atarefados, que tratam o jogo Ragnarok hoje em dia como distração, ou um passa tempo.
@@ -99,12 +99,12 @@ if (!defined('FLUX_ROOT')) exit;
                         <h5>- <font color="46305e">Max Level/Job</font> : 175
 						<h5>- <font color="46305e">Max Status</font> : xxx
 						<h5>- <font color="46305e">Max ASPD</font> : 193
-						<h5>- <font color="46305e">Rates</font> : 1/10/10
+						<h5>- <font color="46305e">Rates</font> : 1/1/1
 						<h5>- <font color="46305e">Drops Equips Normais</font> : 10%
 						<h5>- <font color="46305e">Drops Equips MVP</font> : 5%
 						<h5>- <font color="46305e">Drops Cartas Normais</font> : 1%
 						<h5>- <font color="46305e">Drops Cartas MVP</font> : 0.5%
-						<h5>- <font color="46305e">Servidor</font> : Renovação
+						<h5>- <font color="46305e">Servidor</font> : Progressivo
                         </h5>
                         
                     </div> 	         	 
@@ -178,10 +178,9 @@ if (!defined('FLUX_ROOT')) exit;
                     <center><span class="icon"> <img src="images/icons/vot.png" /> </span></center>	   	           
 
                     <div class="service-content">
-                        <center><h3>VOTE POR PONTOS</h3></center>
+                        <center><h3>Sistema RMT</h3></center>
 
-                        <h5>- <font color="46305e">Vote</font> : Ganhe pontos votando diariamente em nosso servidor, e troque por itens visuais, vip, entre outras prêmiações.
-						</h5>
+                        <h5>- <font color="46305e">RMT</font> : Sistema automatizado para que os players possam sacar seus RMT diretamente do jogo para suas contas bancarias sem a necessidade de revendedores.
                             
                     </div>	               
 
@@ -291,17 +290,17 @@ if (!defined('FLUX_ROOT')) exit;
                     </div> 
 
                     <div>
+					    <div class="testimonial-author">
+								<img src="images/avatars/user-02.jpg" alt="Author image">
+							<div class="author-info">
+                                <span>Progressões</span>
+                            </div>
+                        </div>  
                         <p>
-                        Se você se irrita com os críticos, você pode ter certeza de que quase sempre eles estão certos.
+                        Mistura de sistemas unicos e exclusivos com a progressão padrão do jogo, evolua junto com o servidor!
                         </p>
 
-                        <div class="testimonial-author">
-                                <img src="images/avatars/user-02.jpg" alt="Author image">
-                                <div class="author-info">
-                                    [GM] Purple
-                                    <span>Game Master, Event Maker, Suporte</span>
-                                </div>
-                        </div>                                         
+                                       
                     </div> 
 
                 </div> <!-- end slides -->

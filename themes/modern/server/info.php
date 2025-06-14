@@ -1,4 +1,6 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
+
+<section id="about">
 <h2><?php echo htmlspecialchars(Flux::message('ServerInfoHeading')) ?></h2>
 <p><?php echo htmlspecialchars(Flux::message('ServerInfoText')) ?></p>
 
@@ -49,6 +51,4 @@
 		</tr>
 	</table>
 </div>
-
-
-
+</section>

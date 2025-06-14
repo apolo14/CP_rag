@@ -1,62 +1,120 @@
 <?php if (!defined('FLUX_ROOT')) exit; ?>
-
-<?php if ($session->isLoggedIn()): ?>
-   <p class="error" style="color: white;">Você precisa estar logado para acessar esta página.</p>
-<h2 style="color: yellow;">Informações</h2>
-<div class="info-container" style="max-width: 900px; width: 100%; backdrop-filter: blur(8px); background-color: rgba(128, 0, 128, 0.3);">
-    <div class="info-table-wrapper">
-        <h3 style="color: yellow;">Informações da Conta</h3>
-        <table class="info-table" style="color: white;">
-            <tr>
-                <th>Nome de Usuário</th>
-                <td><?php echo htmlspecialchars($session->account->userid) ?></td>
-            </tr>
-            <tr>
-                <th>E-mail</th>
-                <td><?php echo htmlspecialchars($session->account->email) ?></td>
-            </tr>
-            <tr>
-                <th>Grupo</th>
-                <td><?php echo (int)$session->account->group_id ?></td>
-            </tr>
-            <tr>
-                <th>Estado da Conta</th>
-                <td><?php echo $this->accountStateText($session->account->state) ?></td>
-            </tr>
-            <tr>
-                <th>Saldo de Créditos</th>
-                <td><?php echo number_format((int)$session->account->balance) ?></td>
-            </tr>
+  <style>
+    
+    /* Organiza as colunas em layout flex */
+    .about-intro {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    
+    /* Cada coluna ocupa metade do espaço */
+    .col-half {
+      flex: 1;
+      min-width: 280px;
+    }
+    p {
+		text-align: center;
+		color: black;
+	}
+    .col-half h3{
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    /* Estilos para as tabelas */
+    .info-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      background-color: #fff;
+      color: #333;
+    }
+    
+    .info-table th,
+    .info-table td {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+    
+    .info-table th {
+      background-color: #dcd0f3;
+    }
+    
+    .info-table tr:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+  </style>
+  <section id="about">
+    <div class="row about-intro">
+	<h3>Informações sobre o <b>servidor</b>!</h3>
+				<h4>Midgard Realms</h4>
+				<p>O Midgard Realms é um servidor Free-To-Play com Sistema de RMT integrado. Conosco você poderá desfrutar de uma progressão agradável junto com o servidor, 
+				 além disso também poderá desfrutar de sistemas como Conquistas, Títulos, Rankings entre outros.</p>
+      <!-- Primeira tabela: Configurações do Servidor -->
+      <div class="col-half">
+        <h3>Configurações do Servidor</h3>
+        <table class="info-table">
+          <tr>
+            <th>Episódio</th>
+            <td>16.1</td>
+          </tr>
+          <tr>
+            <th>Nível Max.</th>
+            <td>175/70</td>
+          </tr>
+          <tr>
+            <th>Atributos Max.</th>
+            <td>130</td>
+          </tr>
+          <tr>
+            <th>Trait Stats</th>
+            <td>100</td>
+          </tr>
+          <tr>
+            <th>ASPD Max.</th>
+            <td>193</td>
+          </tr>
+          <!--<tr>
+            <th>4th Classes</th>
+            <td>Sim</td>
+          </tr> -->
+          <tr>
+            <th>Classes Expandidas</th>
+            <td>Sim</td>
+          </tr>
+          <tr>
+            <th>Divisão de EXP</th>
+            <td>15 Níveis</td>
+          </tr>
         </table>
+      </div>
+      
+      <!-- Segunda tabela: Tabela de EXP e DROP Base -->
+      <div class="col-half">
+        <h3>Tabela de EXP e DROP Base</h3>
+        <table class="info-table">
+          <tr>
+            <th>Rate</th>
+            <td>1x</td>
+          </tr>
+          <tr>
+            <th>Drop de Itens</th>
+            <td>10x</td>
+          </tr>
+          <tr>
+            <th>Drop de Cartas</th>
+            <td>0,1%</td>
+          </tr>
+          <tr>
+            <th>Drop de Cartas Mini-Boss</th>
+            <td>0,05%</td>
+          </tr>
+          <tr>
+            <th>Drop de Cartas MVP</th>
+            <td>0,01%</td>
+          </tr>
+        </table>
+      </div>
     </div>
-
-<?php else: ?>
-<div class="info-container container-fluid d-flex justify-content-center align-items-center">
-<div class="info-table-wrapper rounded-4">
-            <h3>Informações sobre o <b>servidor</b>!</h3>
-			<h4>Midgard Realms</h4>
-            <table class="info-table" style="color: white;">
-                <tr>
-                    <th>Eps do Servidor</th>
-                    <td>16.1</td>
-                </tr>
-                <tr>
-                    <th>Taxa de Experiência</th>
-                    <td>10x</td>
-                </tr>
-                <tr>
-                    <th>Taxa de Drops</th>
-                    <td>1x</td>
-                </tr>
-                <tr>
-                    <th>Máx. de Nível Base</th>
-                    <td>175</td>
-                </tr>
-                <tr>
-                    <th>Máx. de Nível de Classe</th>
-                    <td>70</td>
-                </tr>
-            </table>
-        </div>
-        </div>
-<?php endif ?>
+  </section>

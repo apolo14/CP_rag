@@ -1,8 +1,8 @@
 <?php
 if (!defined('FLUX_ROOT')) exit;
 $this->loginRequired();
-$ticket_id = trim($params->get('ticketid'));
-$updateID = trim($params->get('update'));
+$ticket_id = trim($params->get('ticketid') ?? '');
+$updateID = trim($params->get('update') ?? '');
 $tbl = Flux::config('FluxTables.ServiceDeskTable'); 
 $tbla = Flux::config('FluxTables.ServiceDeskATable'); 
 $tblc = Flux::config('FluxTables.ServiceDeskCatTable'); 

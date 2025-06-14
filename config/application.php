@@ -275,10 +275,10 @@ return array(
 		),
 		'DonationsLabel'		=> array(
 			'PurchaseLabel'		=> array('module' => 'purchase'),
-			'DonateLabel'		=> array('module' => 'donate'),
+			'DonateLabel'		=> array('module' => 'main', 'action' => 'doar'),
 		),
 		'InformationLabel'	=> array(
-			'ServerInfoLabel'	=> array('module' => 'server', 'action' => 'info'),
+			'ServerInfoLabel'	=> array('module' => 'main', 'action' => 'info'),
 			'ServerStatusLabel'	=> array('module' => 'server', 'action' => 'status'),
 			'WoeHoursLabel'		=> array('module' => 'woe'),
 			'CastlesLabel'		=> array('module' => 'castle'),
